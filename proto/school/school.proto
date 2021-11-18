@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service SchoolService {
+  rpc AddOne(ReqSchoolAdd) returns (ReplySchoolInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplySchoolInfo) {}
+  rpc GetList(RequestPage) returns (ReplySchoolList) {}
+  rpc UpdateOne(RequestInfo) returns (ReplySchoolInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc UpdateSubject(ReqSchoolSubject) returns (ReplySchoolSubjects) {}
+}
+
+message HonorInfo {
+  string uid = 1;
+  string name = 2;
+  string remark = 3;
+  string parent = 4;
+  repeated HonorInfo children = 5;
+  repeated HonorBrief bries = 6;
+}
+
+message HonorBrief {
+  string year = 1;
+  uint32 count = 2;
+  repeated string entities = 3;
+}
+
+message SubjectInfo {
+  string uid = 1;
+  string name = 2;
+  string remark = 3;
+}
+
+message SchoolInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string scene = 3;
+  uint32 created = 4;
+  uint32 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string name = 8;
+  uint32 grade = 9;
+  string entity = 10;
+  repeated HonorInfo honors = 11;
+  repeated HonorInfo respects = 12;
+  repeated SubjectInfo subjects = 13;
+  repeated string teachers = 14;
+}
+
+message ReqSchoolAdd{
+  string scene = 1;
+  uint32 grade = 2;
+  string name = 3;
+  string cover = 4;
+  string entity = 5;
+  string operator = 6;
+}
+
+message ReqSchoolSubject{
+  OptionType option = 1;
+  string uid = 2;
+  string scene = 3;
+  string name = 4;
+  string remark = 5;
+  string operator = 6;
+}
+
+message ReqSchoolUpdate{
+  string scene = 1;
+  string name = 2;
+  string remark = 3;
+  string operator = 4;
+}
+
+message ReplySchoolInfo{
+  SchoolInfo info = 1;
+  uint32 role = 2;
+  ReplyStatus status = 3;
+}
+
+message ReplySchoolHonors{
+  string scene = 1;
+  uint32 type = 2;
+  repeated HonorInfo honors = 3;
+  ReplyStatus status = 4;
+}
+
+message ReplySchoolSubjects{
+  string scene = 1;
+  repeated SubjectInfo subjects = 2;
+  ReplyStatus status = 3;
+}
+
+message ReplySchoolList {
+  uint32 total = 1;
+  uint32 page = 2;
+  uint32 number = 3;
+  repeated SchoolInfo list = 4;
+  ReplyStatus status = 5;
+}

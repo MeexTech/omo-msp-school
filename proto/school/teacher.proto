@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service TeacherService {
+  rpc AddOne(ReqTeacherAdd) returns (ReplyTeacherInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyTeacherInfo) {}
+  rpc GetList(RequestPage) returns (ReplyTeacherList) {}
+  rpc UpdateOne(RequestInfo) returns (ReplyTeacherInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc AddBath(ReqTeacherBatch) returns (ReplyTeacherList){}
+}
+
+message TeacherInfo {
+  uint32 id = 1;
+  string uid = 2;
+  string name = 3;
+  string entity = 4;
+  string user = 5;
+  uint32 created = 6;
+  uint32 updated = 7;
+  string creator = 8;
+  string operator = 9;
+  string owner = 10;
+  repeated string classes = 11;
+  repeated string subjects = 12;
+}
+
+message ReqTeacherAdd {
+  string owner = 1;
+  string name = 2;
+  string entity = 3;
+  string user = 4;
+  string operator = 5;
+  repeated string subjects = 6;
+  repeated string classes = 7;
+}
+
+message ReqTeacherUpdate {
+  string owner = 1;
+  string uid = 2;
+  string name = 3;
+  string operator = 4;
+  repeated string classes = 5;
+  repeated string subjects = 6;
+}
+
+message ReqTeacherBatch {
+  string owner = 1;
+  string data = 2;
+  string operator = 3;
+}
+
+message ReplyTeacherInfo {
+  TeacherInfo info = 1;
+  ReplyStatus status = 2;
+}
+
+message ReplyTeacherList {
+  uint32 total = 1;
+  uint32 page = 2;
+  uint32 number = 3;
+  ReplyStatus status = 4;
+  repeated TeacherInfo list = 5;
+}

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+
+enum OptionType {
+  Add = 0;
+  Update = 1;
+  Remove = 2;
+  Get = 3;
+}
+
+enum TargetType {
+  TSelf = 0;
+  TStudent = 1;
+  TTeacher = 2;
+  TClass = 3;
+  TStudent_GH = 4;
+  TTeacher_GH = 5;
+  TSubject = 6;
+}
+
+message PairInfo {
+  string key = 1;
+  string value = 2;
+}
+
+message RequestInfo {
+  string uid = 1;
+  string operator = 2;
+  string flag = 3;
+}
+
+message RequestPage{
+  uint32 page = 1;
+  uint32 number = 2;
+}
+
+message ReplyStatus {
+  uint32 code = 1;
+  string msg = 2;
+}
+
+message ReplyInfo {
+  string uid = 1;
+  ReplyStatus status = 2;
+}

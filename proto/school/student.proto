@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service StudentService {
+  rpc AddOne(ReqStudentAdd) returns (ReplyStudentInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyStudentInfo) {}
+  rpc GetList(RequestPage) returns (ReplyStudentList) {}
+  rpc UpdateOne(RequestInfo) returns (ReplyStudentInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc AddBach(ReqStudentBatch) returns (ReplyStudentList){}
+  rpc BindEntity(ReqStudentBind) returns (ReplyStudentInfo){}
+}
+
+message CustodianInfo {
+  string name = 1;
+  string identify = 2;
+  repeated string phones = 3;
+}
+
+message StudentInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string name = 3;
+  uint32 created = 4;
+  uint32 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string sn = 8;
+  string card = 9;
+  uint32 sex = 10;
+  string enrol = 11;
+  string entity = 12;
+  string sid = 13;
+  repeated CustodianInfo custodians = 14;
+}
+
+message ReqStudentAdd {
+  string owner = 1;
+  string name = 2;
+  string sn = 5;
+  string card = 6;
+  uint32 sex = 7;
+  string operator = 8;
+  string enrol = 9;
+  repeated CustodianInfo custodians = 10;
+}
+
+message ReqStudentUpdate {
+  string owner = 1;
+  string uid = 2;
+  string name = 3;
+  string card = 4;
+  uint32 sex = 5;
+  string sn = 6;
+  string operator = 7;
+  string enrol = 9;
+  repeated CustodianInfo custodians = 10;
+}
+
+message ReqStudentBind {
+  string owner = 1;
+  string entity = 2;
+  string uid = 3;
+  string card = 4;
+  string name = 5;
+  string operator = 6;
+}
+
+message ReqStudentBatch {
+  string owner = 1;
+  string data = 2;
+  string operator = 3;
+}
+
+message ReplyStudentInfo {
+  StudentInfo info = 1;
+  ReplyStatus status = 2;
+}
+
+message ReplyStudentList {
+  uint32 total = 1;
+  uint32 page = 2;
+  uint32 number = 3;
+  repeated StudentInfo list = 4;
+  ReplyStatus status = 5;
+}

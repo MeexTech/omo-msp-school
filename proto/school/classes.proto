@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service ClassesService {
+  rpc AddOne(ReqClassAdd) returns (ReplyClassInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyClassList) {}
+  rpc GetList(RequestPage) returns (ReplyClassList) {}
+  rpc UpdateOne(RequestInfo) returns (ReplyClassInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc SetMaster(ReqClassMaster) returns (ReplyInfo){}
+  rpc StudentJoin(ReqClassJoin) returns (ReplyInfo){}
+  rpc StudentKick(ReqClassKick) returns (ReplyInfo){}
+}
+
+message MemberInfo {
+  string uid = 1;
+  string student = 2;
+  uint32 status = 3;
+  string remark = 4;
+}
+
+message ClassInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string name = 3;
+  uint32 created = 4;
+  uint32 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string owner = 8;
+  string enrol = 9;
+  uint32 grade = 10;
+  uint32 type = 11;
+  uint32 no = 12;
+  string master = 13;
+  repeated string teachers = 14;
+  repeated MemberInfo students = 15;
+}
+
+message ReqClassAdd {
+  string scene = 1;
+  string name = 2;
+  string enrol = 3;
+  uint32 count = 4;
+  string operator = 5;
+}
+
+message ReqClassUpdate {
+  string parent = 1;
+  string uid = 2;
+  string name = 3;
+  string operator = 4;
+}
+
+message ReqClassMaster {
+  string parent = 1;
+  string uid = 2;
+  string teacher = 3;
+  string operator = 4;
+}
+
+message ReqClassKick {
+  string parent = 1;
+  string uid = 2;
+  string student = 3;
+  string remark = 4;
+  string operator = 5;
+}
+
+message ReqClassJoin {
+  string name = 1;
+  string child = 2;
+  string sn = 3;
+  string school = 4;
+  string class = 5;
+  uint32 sex = 6;
+  string card = 7;
+  string operator = 8;
+}
+
+message ReplyClassInfo {
+  ClassInfo info = 1;
+  ReplyStatus status = 2;
+}
+
+message ReplyClassList {
+  uint32 total = 1; //总数
+  uint32 page = 2; //当前页
+  uint32 number = 3; //每页的数量
+  repeated ClassInfo list = 4; //实际数据
+  ReplyStatus status = 5;
+}
