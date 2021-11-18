@@ -19,8 +19,8 @@ message TeacherInfo {
   string name = 3;
   string entity = 4;
   string user = 5;
-  uint32 created = 6;
-  uint32 updated = 7;
+  uint64 created = 6;
+  uint64 updated = 7;
   string creator = 8;
   string operator = 9;
   string owner = 10;

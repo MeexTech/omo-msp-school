@@ -26,8 +26,8 @@ message ClassInfo {
   uint64 id = 1;
   string uid = 2;
   string name = 3;
-  uint32 created = 4;
-  uint32 updated = 5;
+  uint64 created = 4;
+  uint64 updated = 5;
   string creator = 6;
   string operator = 7;
   string owner = 8;
