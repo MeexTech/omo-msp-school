@@ -49,8 +49,8 @@ message ReqTeacherUpdate {
 
 message ReqTeacherBatch {
   string owner = 1;
-  string data = 2;
-  string operator = 3;
+  string operator = 2;
+  repeated ReqTeacherAdd list = 3;
 }
 
 message ReplyTeacherInfo {

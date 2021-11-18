@@ -70,8 +70,8 @@ message ReqStudentBind {
 
 message ReqStudentBatch {
   string owner = 1;
-  string data = 2;
-  string operator = 3;
+  string operator = 2;
+  repeated ReqStudentAdd list = 3;
 }
 
 message ReplyStudentInfo {
