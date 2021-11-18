@@ -65,8 +65,7 @@ message ReqStudentBind {
   string entity = 2;
   string uid = 3;
   string card = 4;
-  string name = 5;
-  string operator = 6;
+  string operator = 5;
 }
 
 message ReqStudentBatch {
