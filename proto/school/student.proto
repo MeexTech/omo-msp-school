@@ -8,7 +8,7 @@ service StudentService {
   rpc AddOne(ReqStudentAdd) returns (ReplyStudentInfo) {}
   rpc GetOne(RequestInfo) returns (ReplyStudentInfo) {}
   rpc GetList(RequestPage) returns (ReplyStudentList) {}
-  rpc UpdateOne(RequestInfo) returns (ReplyStudentInfo) {}
+  rpc UpdateOne(ReqStudentUpdate) returns (ReplyStudentInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBach(ReqStudentBatch) returns (ReplyStudentList){}
   rpc BindEntity(ReqStudentBind) returns (ReplyStudentInfo){}
@@ -45,7 +45,8 @@ message ReqStudentAdd {
   uint32 sex = 7;
   string operator = 8;
   string enrol = 9;
-  repeated CustodianInfo custodians = 10;
+  string class = 10;
+  repeated CustodianInfo custodians = 11;
 }
 
 message ReqStudentUpdate {

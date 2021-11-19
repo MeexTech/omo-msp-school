@@ -37,7 +37,7 @@ type TeacherService interface {
 	AddOne(ctx context.Context, in *ReqTeacherAdd, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error)
-	UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyTeacherInfo, error)
+	UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBath(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
 }
@@ -84,7 +84,7 @@ func (c *teacherService) GetList(ctx context.Context, in *RequestPage, opts ...c
 	return out, nil
 }
 
-func (c *teacherService) UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyTeacherInfo, error) {
+func (c *teacherService) UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error) {
 	req := c.c.NewRequest(c.name, "TeacherService.UpdateOne", in)
 	out := new(ReplyTeacherInfo)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -120,7 +120,7 @@ type TeacherServiceHandler interface {
 	AddOne(context.Context, *ReqTeacherAdd, *ReplyTeacherInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyTeacherInfo) error
 	GetList(context.Context, *RequestPage, *ReplyTeacherList) error
-	UpdateOne(context.Context, *RequestInfo, *ReplyTeacherInfo) error
+	UpdateOne(context.Context, *ReqTeacherUpdate, *ReplyTeacherInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBath(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
 }
@@ -130,7 +130,7 @@ func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, 
 		AddOne(ctx context.Context, in *ReqTeacherAdd, out *ReplyTeacherInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyTeacherInfo) error
 		GetList(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error
-		UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyTeacherInfo) error
+		UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBath(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
 	}
@@ -157,7 +157,7 @@ func (h *teacherServiceHandler) GetList(ctx context.Context, in *RequestPage, ou
 	return h.TeacherServiceHandler.GetList(ctx, in, out)
 }
 
-func (h *teacherServiceHandler) UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyTeacherInfo) error {
+func (h *teacherServiceHandler) UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error {
 	return h.TeacherServiceHandler.UpdateOne(ctx, in, out)
 }
 

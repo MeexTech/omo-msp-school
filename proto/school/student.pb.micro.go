@@ -37,7 +37,7 @@ type StudentService interface {
 	AddOne(ctx context.Context, in *ReqStudentAdd, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
-	UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error)
+	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBach(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
 	BindEntity(ctx context.Context, in *ReqStudentBind, opts ...client.CallOption) (*ReplyStudentInfo, error)
@@ -85,7 +85,7 @@ func (c *studentService) GetList(ctx context.Context, in *RequestPage, opts ...c
 	return out, nil
 }
 
-func (c *studentService) UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error) {
+func (c *studentService) UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error) {
 	req := c.c.NewRequest(c.name, "StudentService.UpdateOne", in)
 	out := new(ReplyStudentInfo)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -131,7 +131,7 @@ type StudentServiceHandler interface {
 	AddOne(context.Context, *ReqStudentAdd, *ReplyStudentInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyStudentInfo) error
 	GetList(context.Context, *RequestPage, *ReplyStudentList) error
-	UpdateOne(context.Context, *RequestInfo, *ReplyStudentInfo) error
+	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBach(context.Context, *ReqStudentBatch, *ReplyStudentList) error
 	BindEntity(context.Context, *ReqStudentBind, *ReplyStudentInfo) error
@@ -142,7 +142,7 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 		AddOne(ctx context.Context, in *ReqStudentAdd, out *ReplyStudentInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error
 		GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
-		UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error
+		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBach(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
 		BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error
@@ -170,7 +170,7 @@ func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestPage, ou
 	return h.StudentServiceHandler.GetList(ctx, in, out)
 }
 
-func (h *studentServiceHandler) UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error {
+func (h *studentServiceHandler) UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error {
 	return h.StudentServiceHandler.UpdateOne(ctx, in, out)
 }
 

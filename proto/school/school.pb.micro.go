@@ -37,7 +37,7 @@ type SchoolService interface {
 	AddOne(ctx context.Context, in *ReqSchoolAdd, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplySchoolList, error)
-	UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplySchoolInfo, error)
+	UpdateOne(ctx context.Context, in *ReqSchoolUpdate, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateSubject(ctx context.Context, in *ReqSchoolSubject, opts ...client.CallOption) (*ReplySchoolSubjects, error)
 }
@@ -84,7 +84,7 @@ func (c *schoolService) GetList(ctx context.Context, in *RequestPage, opts ...cl
 	return out, nil
 }
 
-func (c *schoolService) UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplySchoolInfo, error) {
+func (c *schoolService) UpdateOne(ctx context.Context, in *ReqSchoolUpdate, opts ...client.CallOption) (*ReplySchoolInfo, error) {
 	req := c.c.NewRequest(c.name, "SchoolService.UpdateOne", in)
 	out := new(ReplySchoolInfo)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -120,7 +120,7 @@ type SchoolServiceHandler interface {
 	AddOne(context.Context, *ReqSchoolAdd, *ReplySchoolInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplySchoolInfo) error
 	GetList(context.Context, *RequestPage, *ReplySchoolList) error
-	UpdateOne(context.Context, *RequestInfo, *ReplySchoolInfo) error
+	UpdateOne(context.Context, *ReqSchoolUpdate, *ReplySchoolInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	UpdateSubject(context.Context, *ReqSchoolSubject, *ReplySchoolSubjects) error
 }
@@ -130,7 +130,7 @@ func RegisterSchoolServiceHandler(s server.Server, hdlr SchoolServiceHandler, op
 		AddOne(ctx context.Context, in *ReqSchoolAdd, out *ReplySchoolInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplySchoolInfo) error
 		GetList(ctx context.Context, in *RequestPage, out *ReplySchoolList) error
-		UpdateOne(ctx context.Context, in *RequestInfo, out *ReplySchoolInfo) error
+		UpdateOne(ctx context.Context, in *ReqSchoolUpdate, out *ReplySchoolInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		UpdateSubject(ctx context.Context, in *ReqSchoolSubject, out *ReplySchoolSubjects) error
 	}
@@ -157,7 +157,7 @@ func (h *schoolServiceHandler) GetList(ctx context.Context, in *RequestPage, out
 	return h.SchoolServiceHandler.GetList(ctx, in, out)
 }
 
-func (h *schoolServiceHandler) UpdateOne(ctx context.Context, in *RequestInfo, out *ReplySchoolInfo) error {
+func (h *schoolServiceHandler) UpdateOne(ctx context.Context, in *ReqSchoolUpdate, out *ReplySchoolInfo) error {
 	return h.SchoolServiceHandler.UpdateOne(ctx, in, out)
 }
 
