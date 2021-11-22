@@ -34,14 +34,14 @@ var _ server.Option
 // Client API for ClassesService service
 
 type ClassesService interface {
-	AddOne(ctx context.Context, in *ReqClassAdd, opts ...client.CallOption) (*ReplyClassInfo, error)
-	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error)
-	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error)
-	UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassInfo, error)
+	AddOne(ctx context.Context, in *ReqClassAdd, opts ...client.CallOption) (*ReplyClassList, error)
+	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassInfo, error)
+	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error)
+	UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	SetMaster(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
-	StudentJoin(ctx context.Context, in *ReqClassJoin, opts ...client.CallOption) (*ReplyInfo, error)
-	StudentKick(ctx context.Context, in *ReqClassKick, opts ...client.CallOption) (*ReplyInfo, error)
+	StudentAdd(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error)
+	StudentKick(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type classesService struct {
@@ -56,18 +56,8 @@ func NewClassesService(name string, c client.Client) ClassesService {
 	}
 }
 
-func (c *classesService) AddOne(ctx context.Context, in *ReqClassAdd, opts ...client.CallOption) (*ReplyClassInfo, error) {
+func (c *classesService) AddOne(ctx context.Context, in *ReqClassAdd, opts ...client.CallOption) (*ReplyClassList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.AddOne", in)
-	out := new(ReplyClassInfo)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *classesService) GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error) {
-	req := c.c.NewRequest(c.name, "ClassesService.GetOne", in)
 	out := new(ReplyClassList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -76,7 +66,17 @@ func (c *classesService) GetOne(ctx context.Context, in *RequestInfo, opts ...cl
 	return out, nil
 }
 
-func (c *classesService) GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error) {
+func (c *classesService) GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassInfo, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.GetOne", in)
+	out := new(ReplyClassInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *classesService) GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.GetList", in)
 	out := new(ReplyClassList)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -86,7 +86,7 @@ func (c *classesService) GetList(ctx context.Context, in *RequestPage, opts ...c
 	return out, nil
 }
 
-func (c *classesService) UpdateOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassInfo, error) {
+func (c *classesService) UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.UpdateOne", in)
 	out := new(ReplyClassInfo)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -116,8 +116,8 @@ func (c *classesService) SetMaster(ctx context.Context, in *ReqClassMaster, opts
 	return out, nil
 }
 
-func (c *classesService) StudentJoin(ctx context.Context, in *ReqClassJoin, opts ...client.CallOption) (*ReplyInfo, error) {
-	req := c.c.NewRequest(c.name, "ClassesService.StudentJoin", in)
+func (c *classesService) StudentAdd(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.StudentAdd", in)
 	out := new(ReplyInfo)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -126,7 +126,7 @@ func (c *classesService) StudentJoin(ctx context.Context, in *ReqClassJoin, opts
 	return out, nil
 }
 
-func (c *classesService) StudentKick(ctx context.Context, in *ReqClassKick, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *classesService) StudentKick(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.StudentKick", in)
 	out := new(ReplyInfo)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -139,26 +139,26 @@ func (c *classesService) StudentKick(ctx context.Context, in *ReqClassKick, opts
 // Server API for ClassesService service
 
 type ClassesServiceHandler interface {
-	AddOne(context.Context, *ReqClassAdd, *ReplyClassInfo) error
-	GetOne(context.Context, *RequestInfo, *ReplyClassList) error
-	GetList(context.Context, *RequestPage, *ReplyClassList) error
-	UpdateOne(context.Context, *RequestInfo, *ReplyClassInfo) error
+	AddOne(context.Context, *ReqClassAdd, *ReplyClassList) error
+	GetOne(context.Context, *RequestInfo, *ReplyClassInfo) error
+	GetList(context.Context, *RequestInfo, *ReplyClassList) error
+	UpdateOne(context.Context, *ReqClassUpdate, *ReplyClassInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	SetMaster(context.Context, *ReqClassMaster, *ReplyInfo) error
-	StudentJoin(context.Context, *ReqClassJoin, *ReplyInfo) error
-	StudentKick(context.Context, *ReqClassKick, *ReplyInfo) error
+	StudentAdd(context.Context, *ReqClassStudent, *ReplyInfo) error
+	StudentKick(context.Context, *ReqClassStudent, *ReplyInfo) error
 }
 
 func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, opts ...server.HandlerOption) error {
 	type classesService interface {
-		AddOne(ctx context.Context, in *ReqClassAdd, out *ReplyClassInfo) error
-		GetOne(ctx context.Context, in *RequestInfo, out *ReplyClassList) error
-		GetList(ctx context.Context, in *RequestPage, out *ReplyClassList) error
-		UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyClassInfo) error
+		AddOne(ctx context.Context, in *ReqClassAdd, out *ReplyClassList) error
+		GetOne(ctx context.Context, in *RequestInfo, out *ReplyClassInfo) error
+		GetList(ctx context.Context, in *RequestInfo, out *ReplyClassList) error
+		UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
-		StudentJoin(ctx context.Context, in *ReqClassJoin, out *ReplyInfo) error
-		StudentKick(ctx context.Context, in *ReqClassKick, out *ReplyInfo) error
+		StudentAdd(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error
+		StudentKick(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error
 	}
 	type ClassesService struct {
 		classesService
@@ -171,19 +171,19 @@ type classesServiceHandler struct {
 	ClassesServiceHandler
 }
 
-func (h *classesServiceHandler) AddOne(ctx context.Context, in *ReqClassAdd, out *ReplyClassInfo) error {
+func (h *classesServiceHandler) AddOne(ctx context.Context, in *ReqClassAdd, out *ReplyClassList) error {
 	return h.ClassesServiceHandler.AddOne(ctx, in, out)
 }
 
-func (h *classesServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *ReplyClassList) error {
+func (h *classesServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *ReplyClassInfo) error {
 	return h.ClassesServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *classesServiceHandler) GetList(ctx context.Context, in *RequestPage, out *ReplyClassList) error {
+func (h *classesServiceHandler) GetList(ctx context.Context, in *RequestInfo, out *ReplyClassList) error {
 	return h.ClassesServiceHandler.GetList(ctx, in, out)
 }
 
-func (h *classesServiceHandler) UpdateOne(ctx context.Context, in *RequestInfo, out *ReplyClassInfo) error {
+func (h *classesServiceHandler) UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error {
 	return h.ClassesServiceHandler.UpdateOne(ctx, in, out)
 }
 
@@ -195,10 +195,10 @@ func (h *classesServiceHandler) SetMaster(ctx context.Context, in *ReqClassMaste
 	return h.ClassesServiceHandler.SetMaster(ctx, in, out)
 }
 
-func (h *classesServiceHandler) StudentJoin(ctx context.Context, in *ReqClassJoin, out *ReplyInfo) error {
-	return h.ClassesServiceHandler.StudentJoin(ctx, in, out)
+func (h *classesServiceHandler) StudentAdd(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error {
+	return h.ClassesServiceHandler.StudentAdd(ctx, in, out)
 }
 
-func (h *classesServiceHandler) StudentKick(ctx context.Context, in *ReqClassKick, out *ReplyInfo) error {
+func (h *classesServiceHandler) StudentKick(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error {
 	return h.ClassesServiceHandler.StudentKick(ctx, in, out)
 }

@@ -39,7 +39,7 @@ type TeacherService interface {
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error)
 	UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
-	AddBath(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
+	AddBatch(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
 }
 
 type teacherService struct {
@@ -104,8 +104,8 @@ func (c *teacherService) RemoveOne(ctx context.Context, in *RequestInfo, opts ..
 	return out, nil
 }
 
-func (c *teacherService) AddBath(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error) {
-	req := c.c.NewRequest(c.name, "TeacherService.AddBath", in)
+func (c *teacherService) AddBatch(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error) {
+	req := c.c.NewRequest(c.name, "TeacherService.AddBatch", in)
 	out := new(ReplyTeacherList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -122,7 +122,7 @@ type TeacherServiceHandler interface {
 	GetList(context.Context, *RequestPage, *ReplyTeacherList) error
 	UpdateOne(context.Context, *ReqTeacherUpdate, *ReplyTeacherInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
-	AddBath(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
+	AddBatch(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
 }
 
 func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, opts ...server.HandlerOption) error {
@@ -132,7 +132,7 @@ func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, 
 		GetList(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error
 		UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
-		AddBath(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
+		AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
 	}
 	type TeacherService struct {
 		teacherService
@@ -165,6 +165,6 @@ func (h *teacherServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, 
 	return h.TeacherServiceHandler.RemoveOne(ctx, in, out)
 }
 
-func (h *teacherServiceHandler) AddBath(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error {
-	return h.TeacherServiceHandler.AddBath(ctx, in, out)
+func (h *teacherServiceHandler) AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error {
+	return h.TeacherServiceHandler.AddBatch(ctx, in, out)
 }

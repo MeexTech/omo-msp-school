@@ -39,7 +39,7 @@ type StudentService interface {
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
 	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
-	AddBach(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
+	AddBatch(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
 	BindEntity(ctx context.Context, in *ReqStudentBind, opts ...client.CallOption) (*ReplyStudentInfo, error)
 }
 
@@ -105,8 +105,8 @@ func (c *studentService) RemoveOne(ctx context.Context, in *RequestInfo, opts ..
 	return out, nil
 }
 
-func (c *studentService) AddBach(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error) {
-	req := c.c.NewRequest(c.name, "StudentService.AddBach", in)
+func (c *studentService) AddBatch(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error) {
+	req := c.c.NewRequest(c.name, "StudentService.AddBatch", in)
 	out := new(ReplyStudentList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -133,7 +133,7 @@ type StudentServiceHandler interface {
 	GetList(context.Context, *RequestPage, *ReplyStudentList) error
 	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
-	AddBach(context.Context, *ReqStudentBatch, *ReplyStudentList) error
+	AddBatch(context.Context, *ReqStudentBatch, *ReplyStudentList) error
 	BindEntity(context.Context, *ReqStudentBind, *ReplyStudentInfo) error
 }
 
@@ -144,7 +144,7 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 		GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
 		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
-		AddBach(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
+		AddBatch(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
 		BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error
 	}
 	type StudentService struct {
@@ -178,8 +178,8 @@ func (h *studentServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, 
 	return h.StudentServiceHandler.RemoveOne(ctx, in, out)
 }
 
-func (h *studentServiceHandler) AddBach(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error {
-	return h.StudentServiceHandler.AddBach(ctx, in, out)
+func (h *studentServiceHandler) AddBatch(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error {
+	return h.StudentServiceHandler.AddBatch(ctx, in, out)
 }
 
 func (h *studentServiceHandler) BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error {

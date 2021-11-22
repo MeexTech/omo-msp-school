@@ -98,7 +98,8 @@ message ReplySchoolSubjects{
 message ReplySchoolList {
   uint32 total = 1;
   uint32 page = 2;
-  uint32 number = 3;
-  repeated SchoolInfo list = 4;
-  ReplyStatus status = 5;
+  uint32 pages = 3;
+  uint32 number = 4;
+  repeated SchoolInfo list = 5;
+  ReplyStatus status = 6;
 }

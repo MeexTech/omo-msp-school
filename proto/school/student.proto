@@ -10,7 +10,7 @@ service StudentService {
   rpc GetList(RequestPage) returns (ReplyStudentList) {}
   rpc UpdateOne(ReqStudentUpdate) returns (ReplyStudentInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
-  rpc AddBach(ReqStudentBatch) returns (ReplyStudentList){}
+  rpc AddBatch(ReqStudentBatch) returns (ReplyStudentList){}
   rpc BindEntity(ReqStudentBind) returns (ReplyStudentInfo){}
 }
 
@@ -34,7 +34,8 @@ message StudentInfo {
   string enrol = 11;
   string entity = 12;
   string sid = 13;
-  repeated CustodianInfo custodians = 14;
+  string class = 14;
+  repeated CustodianInfo custodians = 15;
 }
 
 message ReqStudentAdd {
@@ -83,7 +84,8 @@ message ReplyStudentInfo {
 message ReplyStudentList {
   uint32 total = 1;
   uint32 page = 2;
-  uint32 number = 3;
-  repeated StudentInfo list = 4;
-  ReplyStatus status = 5;
+  uint32 pages = 3;
+  uint32 number = 4;
+  repeated StudentInfo list = 5;
+  ReplyStatus status = 6;
 }

@@ -34,6 +34,7 @@ message RequestInfo {
 message RequestPage{
   uint32 page = 1;
   uint32 number = 2;
+  string flag = 3;
 }
 
 message ReplyStatus {
