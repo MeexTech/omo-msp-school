@@ -11,10 +11,10 @@ service ClassesService {
   rpc UpdateOne(ReqClassUpdate) returns (ReplyClassInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc SetMaster(ReqClassMaster) returns (ReplyInfo){}
-  rpc AppendStudent(ReqClassStudent) returns (ReplyInfo){}
-  rpc SubtractStudent(ReqClassStudent) returns (ReplyInfo){}
-  rpc AppendTeacher(ReqClassTeacher) returns (ReplyInfo){}
-  rpc SubtractTeacher(ReqClassTeacher) returns (ReplyInfo){}
+  rpc AppendStudent(ReqClassStudent) returns (ReplyClassStudents){}
+  rpc SubtractStudent(ReqClassStudent) returns (ReplyClassStudents){}
+  rpc AppendTeacher(ReqClassTeacher) returns (ReplyList){}
+  rpc SubtractTeacher(ReqClassTeacher) returns (ReplyList){}
 }
 
 message MemberInfo {
@@ -84,6 +84,11 @@ message ReqClassTeacher{
 message ReplyClassInfo {
   ClassInfo info = 1;
   ReplyStatus status = 2;
+}
+
+message ReplyClassStudents {
+  ReplyStatus status = 1;
+  repeated MemberInfo students = 2;
 }
 
 message ReplyClassList {

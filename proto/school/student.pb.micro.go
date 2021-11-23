@@ -36,6 +36,7 @@ var _ server.Option
 type StudentService interface {
 	AddOne(ctx context.Context, in *ReqStudentAdd, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error)
+	GetByFilter(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error)
 	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error)
 	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
@@ -70,6 +71,16 @@ func (c *studentService) AddOne(ctx context.Context, in *ReqStudentAdd, opts ...
 func (c *studentService) GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error) {
 	req := c.c.NewRequest(c.name, "StudentService.GetOne", in)
 	out := new(ReplyStudentInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *studentService) GetByFilter(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error) {
+	req := c.c.NewRequest(c.name, "StudentService.GetByFilter", in)
+	out := new(ReplyStudentList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -152,6 +163,7 @@ func (c *studentService) UpdateTags(ctx context.Context, in *RequestList, opts .
 type StudentServiceHandler interface {
 	AddOne(context.Context, *ReqStudentAdd, *ReplyStudentInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyStudentInfo) error
+	GetByFilter(context.Context, *RequestInfo, *ReplyStudentList) error
 	GetList(context.Context, *RequestInfo, *ReplyStudentList) error
 	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
@@ -165,6 +177,7 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 	type studentService interface {
 		AddOne(ctx context.Context, in *ReqStudentAdd, out *ReplyStudentInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error
+		GetByFilter(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error
 		GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error
 		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
@@ -190,6 +203,10 @@ func (h *studentServiceHandler) AddOne(ctx context.Context, in *ReqStudentAdd, o
 
 func (h *studentServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error {
 	return h.StudentServiceHandler.GetOne(ctx, in, out)
+}
+
+func (h *studentServiceHandler) GetByFilter(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error {
+	return h.StudentServiceHandler.GetByFilter(ctx, in, out)
 }
 
 func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error {

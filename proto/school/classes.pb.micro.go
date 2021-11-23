@@ -40,10 +40,10 @@ type ClassesService interface {
 	UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	SetMaster(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
-	AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error)
-	SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error)
-	AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyInfo, error)
-	SubtractTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyInfo, error)
+	AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error)
+	SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error)
+	AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error)
+	SubtractTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error)
 }
 
 type classesService struct {
@@ -118,9 +118,9 @@ func (c *classesService) SetMaster(ctx context.Context, in *ReqClassMaster, opts
 	return out, nil
 }
 
-func (c *classesService) AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *classesService) AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.AppendStudent", in)
-	out := new(ReplyInfo)
+	out := new(ReplyClassStudents)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -128,9 +128,9 @@ func (c *classesService) AppendStudent(ctx context.Context, in *ReqClassStudent,
 	return out, nil
 }
 
-func (c *classesService) SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *classesService) SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.SubtractStudent", in)
-	out := new(ReplyInfo)
+	out := new(ReplyClassStudents)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -138,9 +138,9 @@ func (c *classesService) SubtractStudent(ctx context.Context, in *ReqClassStuden
 	return out, nil
 }
 
-func (c *classesService) AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *classesService) AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.AppendTeacher", in)
-	out := new(ReplyInfo)
+	out := new(ReplyList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -148,9 +148,9 @@ func (c *classesService) AppendTeacher(ctx context.Context, in *ReqClassTeacher,
 	return out, nil
 }
 
-func (c *classesService) SubtractTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *classesService) SubtractTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.SubtractTeacher", in)
-	out := new(ReplyInfo)
+	out := new(ReplyList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -167,10 +167,10 @@ type ClassesServiceHandler interface {
 	UpdateOne(context.Context, *ReqClassUpdate, *ReplyClassInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	SetMaster(context.Context, *ReqClassMaster, *ReplyInfo) error
-	AppendStudent(context.Context, *ReqClassStudent, *ReplyInfo) error
-	SubtractStudent(context.Context, *ReqClassStudent, *ReplyInfo) error
-	AppendTeacher(context.Context, *ReqClassTeacher, *ReplyInfo) error
-	SubtractTeacher(context.Context, *ReqClassTeacher, *ReplyInfo) error
+	AppendStudent(context.Context, *ReqClassStudent, *ReplyClassStudents) error
+	SubtractStudent(context.Context, *ReqClassStudent, *ReplyClassStudents) error
+	AppendTeacher(context.Context, *ReqClassTeacher, *ReplyList) error
+	SubtractTeacher(context.Context, *ReqClassTeacher, *ReplyList) error
 }
 
 func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, opts ...server.HandlerOption) error {
@@ -181,10 +181,10 @@ func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, 
 		UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
-		AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error
-		SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error
-		AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyInfo) error
-		SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyInfo) error
+		AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error
+		SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error
+		AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error
+		SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error
 	}
 	type ClassesService struct {
 		classesService
@@ -221,18 +221,18 @@ func (h *classesServiceHandler) SetMaster(ctx context.Context, in *ReqClassMaste
 	return h.ClassesServiceHandler.SetMaster(ctx, in, out)
 }
 
-func (h *classesServiceHandler) AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error {
+func (h *classesServiceHandler) AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error {
 	return h.ClassesServiceHandler.AppendStudent(ctx, in, out)
 }
 
-func (h *classesServiceHandler) SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyInfo) error {
+func (h *classesServiceHandler) SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error {
 	return h.ClassesServiceHandler.SubtractStudent(ctx, in, out)
 }
 
-func (h *classesServiceHandler) AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyInfo) error {
+func (h *classesServiceHandler) AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error {
 	return h.ClassesServiceHandler.AppendTeacher(ctx, in, out)
 }
 
-func (h *classesServiceHandler) SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyInfo) error {
+func (h *classesServiceHandler) SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error {
 	return h.ClassesServiceHandler.SubtractTeacher(ctx, in, out)
 }
