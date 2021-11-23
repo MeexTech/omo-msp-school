@@ -7,11 +7,13 @@ import "proto/school/common.proto";
 service StudentService {
   rpc AddOne(ReqStudentAdd) returns (ReplyStudentInfo) {}
   rpc GetOne(RequestInfo) returns (ReplyStudentInfo) {}
-  rpc GetList(RequestPage) returns (ReplyStudentList) {}
+  rpc GetList(RequestInfo) returns (ReplyStudentList) {}
   rpc UpdateOne(ReqStudentUpdate) returns (ReplyStudentInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqStudentBatch) returns (ReplyStudentList){}
   rpc BindEntity(ReqStudentBind) returns (ReplyStudentInfo){}
+  rpc UpdateCustodian(ReqStudentCustodian) returns (ReplyStudentInfo){}
+  rpc UpdateTags(RequestList) returns (ReplyList){}
 }
 
 message CustodianInfo {
@@ -35,7 +37,9 @@ message StudentInfo {
   string entity = 12;
   string sid = 13;
   string class = 14;
-  repeated CustodianInfo custodians = 15;
+  string school = 15;
+  repeated string tags = 16;
+  repeated CustodianInfo custodians = 17;
 }
 
 message ReqStudentAdd {
@@ -47,7 +51,9 @@ message ReqStudentAdd {
   string operator = 8;
   string enrol = 9;
   string class = 10;
-  repeated CustodianInfo custodians = 11;
+  string sid = 11;
+  string entity = 12;
+  repeated CustodianInfo custodians = 13;
 }
 
 message ReqStudentUpdate {
@@ -60,6 +66,14 @@ message ReqStudentUpdate {
   string operator = 7;
   string enrol = 9;
   repeated CustodianInfo custodians = 10;
+}
+
+message ReqStudentCustodian {
+  string owner = 1;
+  string uid = 2;
+  string name = 3;
+  string identify = 4;
+  string phones = 5;
 }
 
 message ReqStudentBind {

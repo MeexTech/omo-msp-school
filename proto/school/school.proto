@@ -11,6 +11,8 @@ service SchoolService {
   rpc UpdateOne(ReqSchoolUpdate) returns (ReplySchoolInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc UpdateSubject(ReqSchoolSubject) returns (ReplySchoolSubjects) {}
+  rpc AppendTeacher(RequestInfo) returns (ReplyList){}
+  rpc SubtractTeacher(RequestInfo) returns (ReplyList){}
 }
 
 message HonorInfo {
@@ -74,6 +76,7 @@ message ReqSchoolUpdate{
   string name = 2;
   string remark = 3;
   string operator = 4;
+  uint32 grade = 5;
 }
 
 message ReplySchoolInfo{

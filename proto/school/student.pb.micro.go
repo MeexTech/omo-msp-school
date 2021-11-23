@@ -36,11 +36,13 @@ var _ server.Option
 type StudentService interface {
 	AddOne(ctx context.Context, in *ReqStudentAdd, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error)
-	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
+	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error)
 	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
 	BindEntity(ctx context.Context, in *ReqStudentBind, opts ...client.CallOption) (*ReplyStudentInfo, error)
+	UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, opts ...client.CallOption) (*ReplyStudentInfo, error)
+	UpdateTags(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyList, error)
 }
 
 type studentService struct {
@@ -75,7 +77,7 @@ func (c *studentService) GetOne(ctx context.Context, in *RequestInfo, opts ...cl
 	return out, nil
 }
 
-func (c *studentService) GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error) {
+func (c *studentService) GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error) {
 	req := c.c.NewRequest(c.name, "StudentService.GetList", in)
 	out := new(ReplyStudentList)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -125,27 +127,51 @@ func (c *studentService) BindEntity(ctx context.Context, in *ReqStudentBind, opt
 	return out, nil
 }
 
+func (c *studentService) UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, opts ...client.CallOption) (*ReplyStudentInfo, error) {
+	req := c.c.NewRequest(c.name, "StudentService.UpdateCustodian", in)
+	out := new(ReplyStudentInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *studentService) UpdateTags(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyList, error) {
+	req := c.c.NewRequest(c.name, "StudentService.UpdateTags", in)
+	out := new(ReplyList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for StudentService service
 
 type StudentServiceHandler interface {
 	AddOne(context.Context, *ReqStudentAdd, *ReplyStudentInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyStudentInfo) error
-	GetList(context.Context, *RequestPage, *ReplyStudentList) error
+	GetList(context.Context, *RequestInfo, *ReplyStudentList) error
 	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqStudentBatch, *ReplyStudentList) error
 	BindEntity(context.Context, *ReqStudentBind, *ReplyStudentInfo) error
+	UpdateCustodian(context.Context, *ReqStudentCustodian, *ReplyStudentInfo) error
+	UpdateTags(context.Context, *RequestList, *ReplyList) error
 }
 
 func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, opts ...server.HandlerOption) error {
 	type studentService interface {
 		AddOne(ctx context.Context, in *ReqStudentAdd, out *ReplyStudentInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error
-		GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
+		GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error
 		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
 		BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error
+		UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, out *ReplyStudentInfo) error
+		UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error
 	}
 	type StudentService struct {
 		studentService
@@ -166,7 +192,7 @@ func (h *studentServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out
 	return h.StudentServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error {
+func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error {
 	return h.StudentServiceHandler.GetList(ctx, in, out)
 }
 
@@ -184,4 +210,12 @@ func (h *studentServiceHandler) AddBatch(ctx context.Context, in *ReqStudentBatc
 
 func (h *studentServiceHandler) BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error {
 	return h.StudentServiceHandler.BindEntity(ctx, in, out)
+}
+
+func (h *studentServiceHandler) UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, out *ReplyStudentInfo) error {
+	return h.StudentServiceHandler.UpdateCustodian(ctx, in, out)
+}
+
+func (h *studentServiceHandler) UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error {
+	return h.StudentServiceHandler.UpdateTags(ctx, in, out)
 }

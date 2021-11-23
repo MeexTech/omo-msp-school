@@ -40,6 +40,7 @@ type TeacherService interface {
 	UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
+	UpdateTags(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyList, error)
 }
 
 type teacherService struct {
@@ -114,6 +115,16 @@ func (c *teacherService) AddBatch(ctx context.Context, in *ReqTeacherBatch, opts
 	return out, nil
 }
 
+func (c *teacherService) UpdateTags(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyList, error) {
+	req := c.c.NewRequest(c.name, "TeacherService.UpdateTags", in)
+	out := new(ReplyList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for TeacherService service
 
 type TeacherServiceHandler interface {
@@ -123,6 +134,7 @@ type TeacherServiceHandler interface {
 	UpdateOne(context.Context, *ReqTeacherUpdate, *ReplyTeacherInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
+	UpdateTags(context.Context, *RequestList, *ReplyList) error
 }
 
 func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, opts ...server.HandlerOption) error {
@@ -133,6 +145,7 @@ func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, 
 		UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
+		UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error
 	}
 	type TeacherService struct {
 		teacherService
@@ -167,4 +180,8 @@ func (h *teacherServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, 
 
 func (h *teacherServiceHandler) AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error {
 	return h.TeacherServiceHandler.AddBatch(ctx, in, out)
+}
+
+func (h *teacherServiceHandler) UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error {
+	return h.TeacherServiceHandler.UpdateTags(ctx, in, out)
 }

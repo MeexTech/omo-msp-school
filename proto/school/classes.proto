@@ -11,8 +11,10 @@ service ClassesService {
   rpc UpdateOne(ReqClassUpdate) returns (ReplyClassInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc SetMaster(ReqClassMaster) returns (ReplyInfo){}
-  rpc StudentAdd(ReqClassStudent) returns (ReplyInfo){}
-  rpc StudentKick(ReqClassStudent) returns (ReplyInfo){}
+  rpc AppendStudent(ReqClassStudent) returns (ReplyInfo){}
+  rpc SubtractStudent(ReqClassStudent) returns (ReplyInfo){}
+  rpc AppendTeacher(ReqClassTeacher) returns (ReplyInfo){}
+  rpc SubtractTeacher(ReqClassTeacher) returns (ReplyInfo){}
 }
 
 message MemberInfo {
@@ -46,6 +48,7 @@ message ReqClassAdd {
   string enrol = 3;
   uint32 count = 4;
   string operator = 5;
+  uint32 type = 6;
 }
 
 message ReqClassUpdate {
@@ -69,6 +72,13 @@ message ReqClassStudent {
   string remark = 4;
   string operator = 5;
   uint32 status = 6;
+}
+
+message ReqClassTeacher{
+  string school = 1;
+  string uid = 2;
+  string teacher = 3;
+  string operator = 4;
 }
 
 message ReplyClassInfo {

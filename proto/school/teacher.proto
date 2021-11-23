@@ -11,6 +11,7 @@ service TeacherService {
   rpc UpdateOne(ReqTeacherUpdate) returns (ReplyTeacherInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqTeacherBatch) returns (ReplyTeacherList){}
+  rpc UpdateTags(RequestList) returns (ReplyList){}
 }
 
 message TeacherInfo {
@@ -24,8 +25,20 @@ message TeacherInfo {
   string creator = 8;
   string operator = 9;
   string owner = 10;
-  repeated string classes = 11;
-  repeated string subjects = 12;
+  repeated string tags = 11;
+  repeated string classes = 12;
+  repeated string subjects = 13;
+  repeated HistoryInfo histories = 14;
+}
+
+message HistoryInfo {
+  string uid = 1;
+  string school = 2;
+  string remark = 3;
+  uint32 grade = 4;
+  uint32 class = 5;
+  string enrol = 6; // 入职年限
+  uint64 created = 7;
 }
 
 message ReqTeacherAdd {

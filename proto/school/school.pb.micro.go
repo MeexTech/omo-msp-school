@@ -40,6 +40,8 @@ type SchoolService interface {
 	UpdateOne(ctx context.Context, in *ReqSchoolUpdate, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateSubject(ctx context.Context, in *ReqSchoolSubject, opts ...client.CallOption) (*ReplySchoolSubjects, error)
+	AppendTeacher(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyList, error)
+	SubtractTeacher(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyList, error)
 }
 
 type schoolService struct {
@@ -114,6 +116,26 @@ func (c *schoolService) UpdateSubject(ctx context.Context, in *ReqSchoolSubject,
 	return out, nil
 }
 
+func (c *schoolService) AppendTeacher(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyList, error) {
+	req := c.c.NewRequest(c.name, "SchoolService.AppendTeacher", in)
+	out := new(ReplyList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *schoolService) SubtractTeacher(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyList, error) {
+	req := c.c.NewRequest(c.name, "SchoolService.SubtractTeacher", in)
+	out := new(ReplyList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for SchoolService service
 
 type SchoolServiceHandler interface {
@@ -123,6 +145,8 @@ type SchoolServiceHandler interface {
 	UpdateOne(context.Context, *ReqSchoolUpdate, *ReplySchoolInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	UpdateSubject(context.Context, *ReqSchoolSubject, *ReplySchoolSubjects) error
+	AppendTeacher(context.Context, *RequestInfo, *ReplyList) error
+	SubtractTeacher(context.Context, *RequestInfo, *ReplyList) error
 }
 
 func RegisterSchoolServiceHandler(s server.Server, hdlr SchoolServiceHandler, opts ...server.HandlerOption) error {
@@ -133,6 +157,8 @@ func RegisterSchoolServiceHandler(s server.Server, hdlr SchoolServiceHandler, op
 		UpdateOne(ctx context.Context, in *ReqSchoolUpdate, out *ReplySchoolInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		UpdateSubject(ctx context.Context, in *ReqSchoolSubject, out *ReplySchoolSubjects) error
+		AppendTeacher(ctx context.Context, in *RequestInfo, out *ReplyList) error
+		SubtractTeacher(ctx context.Context, in *RequestInfo, out *ReplyList) error
 	}
 	type SchoolService struct {
 		schoolService
@@ -167,4 +193,12 @@ func (h *schoolServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, o
 
 func (h *schoolServiceHandler) UpdateSubject(ctx context.Context, in *ReqSchoolSubject, out *ReplySchoolSubjects) error {
 	return h.SchoolServiceHandler.UpdateSubject(ctx, in, out)
+}
+
+func (h *schoolServiceHandler) AppendTeacher(ctx context.Context, in *RequestInfo, out *ReplyList) error {
+	return h.SchoolServiceHandler.AppendTeacher(ctx, in, out)
+}
+
+func (h *schoolServiceHandler) SubtractTeacher(ctx context.Context, in *RequestInfo, out *ReplyList) error {
+	return h.SchoolServiceHandler.SubtractTeacher(ctx, in, out)
 }

@@ -28,13 +28,24 @@ message PairInfo {
 message RequestInfo {
   string uid = 1;
   string operator = 2;
-  string flag = 3;
+  string filter = 3;
+  string value = 4;
+  string parent = 5;
 }
 
 message RequestPage{
   uint32 page = 1;
   uint32 number = 2;
-  string flag = 3;
+  string filter = 3;
+  string value = 4;
+  string parent = 5;
+}
+
+message RequestList{
+  string parent = 1;
+  string uid = 2;
+  string operator = 3;
+  repeated string list = 4;
 }
 
 message ReplyStatus {
@@ -45,4 +56,10 @@ message ReplyStatus {
 message ReplyInfo {
   string uid = 1;
   ReplyStatus status = 2;
+}
+
+message ReplyList {
+  ReplyStatus status = 1;
+  string uid = 2;
+  repeated string list = 3;
 }
