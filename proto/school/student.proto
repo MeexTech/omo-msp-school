@@ -7,8 +7,8 @@ import "proto/school/common.proto";
 service StudentService {
   rpc AddOne(ReqStudentAdd) returns (ReplyStudentInfo) {}
   rpc GetOne(RequestInfo) returns (ReplyStudentInfo) {}
-  rpc GetByFilter(RequestInfo) returns (ReplyStudentList) {}
-  rpc GetList(RequestInfo) returns (ReplyStudentList) {}
+  rpc GetByFilter(RequestPage) returns (ReplyStudentList) {}
+  rpc GetList(RequestPage) returns (ReplyStudentList) {}
   rpc UpdateOne(ReqStudentUpdate) returns (ReplyStudentInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqStudentBatch) returns (ReplyStudentList){}

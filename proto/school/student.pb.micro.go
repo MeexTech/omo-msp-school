@@ -36,8 +36,8 @@ var _ server.Option
 type StudentService interface {
 	AddOne(ctx context.Context, in *ReqStudentAdd, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentInfo, error)
-	GetByFilter(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error)
-	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error)
+	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
+	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
 	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
@@ -78,7 +78,7 @@ func (c *studentService) GetOne(ctx context.Context, in *RequestInfo, opts ...cl
 	return out, nil
 }
 
-func (c *studentService) GetByFilter(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error) {
+func (c *studentService) GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error) {
 	req := c.c.NewRequest(c.name, "StudentService.GetByFilter", in)
 	out := new(ReplyStudentList)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -88,7 +88,7 @@ func (c *studentService) GetByFilter(ctx context.Context, in *RequestInfo, opts 
 	return out, nil
 }
 
-func (c *studentService) GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyStudentList, error) {
+func (c *studentService) GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error) {
 	req := c.c.NewRequest(c.name, "StudentService.GetList", in)
 	out := new(ReplyStudentList)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -163,8 +163,8 @@ func (c *studentService) UpdateTags(ctx context.Context, in *RequestList, opts .
 type StudentServiceHandler interface {
 	AddOne(context.Context, *ReqStudentAdd, *ReplyStudentInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyStudentInfo) error
-	GetByFilter(context.Context, *RequestInfo, *ReplyStudentList) error
-	GetList(context.Context, *RequestInfo, *ReplyStudentList) error
+	GetByFilter(context.Context, *RequestPage, *ReplyStudentList) error
+	GetList(context.Context, *RequestPage, *ReplyStudentList) error
 	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqStudentBatch, *ReplyStudentList) error
@@ -177,8 +177,8 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 	type studentService interface {
 		AddOne(ctx context.Context, in *ReqStudentAdd, out *ReplyStudentInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyStudentInfo) error
-		GetByFilter(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error
-		GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error
+		GetByFilter(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
+		GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
 		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
@@ -205,11 +205,11 @@ func (h *studentServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out
 	return h.StudentServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *studentServiceHandler) GetByFilter(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error {
+func (h *studentServiceHandler) GetByFilter(ctx context.Context, in *RequestPage, out *ReplyStudentList) error {
 	return h.StudentServiceHandler.GetByFilter(ctx, in, out)
 }
 
-func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestInfo, out *ReplyStudentList) error {
+func (h *studentServiceHandler) GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error {
 	return h.StudentServiceHandler.GetList(ctx, in, out)
 }
 

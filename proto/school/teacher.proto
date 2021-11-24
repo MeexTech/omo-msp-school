@@ -8,6 +8,7 @@ service TeacherService {
   rpc AddOne(ReqTeacherAdd) returns (ReplyTeacherInfo) {}
   rpc GetOne(RequestInfo) returns (ReplyTeacherInfo) {}
   rpc GetList(RequestPage) returns (ReplyTeacherList) {}
+  rpc GetByFilter(RequestPage) returns (ReplyTeacherList) {}
   rpc UpdateOne(ReqTeacherUpdate) returns (ReplyTeacherInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqTeacherBatch) returns (ReplyTeacherList){}

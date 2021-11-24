@@ -37,6 +37,7 @@ type ClassesService interface {
 	AddOne(ctx context.Context, in *ReqClassAdd, opts ...client.CallOption) (*ReplyClassList, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassInfo, error)
 	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error)
+	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error)
 	UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	SetMaster(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
@@ -80,6 +81,16 @@ func (c *classesService) GetOne(ctx context.Context, in *RequestInfo, opts ...cl
 
 func (c *classesService) GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.GetList", in)
+	out := new(ReplyClassList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *classesService) GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.GetByFilter", in)
 	out := new(ReplyClassList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -164,6 +175,7 @@ type ClassesServiceHandler interface {
 	AddOne(context.Context, *ReqClassAdd, *ReplyClassList) error
 	GetOne(context.Context, *RequestInfo, *ReplyClassInfo) error
 	GetList(context.Context, *RequestInfo, *ReplyClassList) error
+	GetByFilter(context.Context, *RequestPage, *ReplyClassList) error
 	UpdateOne(context.Context, *ReqClassUpdate, *ReplyClassInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	SetMaster(context.Context, *ReqClassMaster, *ReplyInfo) error
@@ -178,6 +190,7 @@ func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, 
 		AddOne(ctx context.Context, in *ReqClassAdd, out *ReplyClassList) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyClassInfo) error
 		GetList(ctx context.Context, in *RequestInfo, out *ReplyClassList) error
+		GetByFilter(ctx context.Context, in *RequestPage, out *ReplyClassList) error
 		UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
@@ -207,6 +220,10 @@ func (h *classesServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out
 
 func (h *classesServiceHandler) GetList(ctx context.Context, in *RequestInfo, out *ReplyClassList) error {
 	return h.ClassesServiceHandler.GetList(ctx, in, out)
+}
+
+func (h *classesServiceHandler) GetByFilter(ctx context.Context, in *RequestPage, out *ReplyClassList) error {
+	return h.ClassesServiceHandler.GetByFilter(ctx, in, out)
 }
 
 func (h *classesServiceHandler) UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error {

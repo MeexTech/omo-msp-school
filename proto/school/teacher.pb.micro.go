@@ -37,6 +37,7 @@ type TeacherService interface {
 	AddOne(ctx context.Context, in *ReqTeacherAdd, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error)
+	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error)
 	UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
@@ -77,6 +78,16 @@ func (c *teacherService) GetOne(ctx context.Context, in *RequestInfo, opts ...cl
 
 func (c *teacherService) GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error) {
 	req := c.c.NewRequest(c.name, "TeacherService.GetList", in)
+	out := new(ReplyTeacherList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *teacherService) GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error) {
+	req := c.c.NewRequest(c.name, "TeacherService.GetByFilter", in)
 	out := new(ReplyTeacherList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -131,6 +142,7 @@ type TeacherServiceHandler interface {
 	AddOne(context.Context, *ReqTeacherAdd, *ReplyTeacherInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyTeacherInfo) error
 	GetList(context.Context, *RequestPage, *ReplyTeacherList) error
+	GetByFilter(context.Context, *RequestPage, *ReplyTeacherList) error
 	UpdateOne(context.Context, *ReqTeacherUpdate, *ReplyTeacherInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
@@ -142,6 +154,7 @@ func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, 
 		AddOne(ctx context.Context, in *ReqTeacherAdd, out *ReplyTeacherInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyTeacherInfo) error
 		GetList(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error
+		GetByFilter(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error
 		UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
@@ -168,6 +181,10 @@ func (h *teacherServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out
 
 func (h *teacherServiceHandler) GetList(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error {
 	return h.TeacherServiceHandler.GetList(ctx, in, out)
+}
+
+func (h *teacherServiceHandler) GetByFilter(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error {
+	return h.TeacherServiceHandler.GetByFilter(ctx, in, out)
 }
 
 func (h *teacherServiceHandler) UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error {
