@@ -39,6 +39,7 @@ message RequestPage{
   string filter = 3;
   string value = 4;
   string parent = 5;
+  string params = 6;
 }
 
 message RequestList{
