@@ -46,6 +46,8 @@ type ClassesService interface {
 	SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error)
 	AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error)
 	SubtractTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error)
+	AppendDevice(ctx context.Context, in *ReqClassDevice, opts ...client.CallOption) (*ReplyClassDevices, error)
+	SubtractDevice(ctx context.Context, in *ReqClassDevice, opts ...client.CallOption) (*ReplyClassDevices, error)
 }
 
 type classesService struct {
@@ -180,6 +182,26 @@ func (c *classesService) SubtractTeacher(ctx context.Context, in *ReqClassTeache
 	return out, nil
 }
 
+func (c *classesService) AppendDevice(ctx context.Context, in *ReqClassDevice, opts ...client.CallOption) (*ReplyClassDevices, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.AppendDevice", in)
+	out := new(ReplyClassDevices)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *classesService) SubtractDevice(ctx context.Context, in *ReqClassDevice, opts ...client.CallOption) (*ReplyClassDevices, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.SubtractDevice", in)
+	out := new(ReplyClassDevices)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ClassesService service
 
 type ClassesServiceHandler interface {
@@ -195,6 +217,8 @@ type ClassesServiceHandler interface {
 	SubtractStudent(context.Context, *ReqClassStudent, *ReplyClassStudents) error
 	AppendTeacher(context.Context, *ReqClassTeacher, *ReplyList) error
 	SubtractTeacher(context.Context, *ReqClassTeacher, *ReplyList) error
+	AppendDevice(context.Context, *ReqClassDevice, *ReplyClassDevices) error
+	SubtractDevice(context.Context, *ReqClassDevice, *ReplyClassDevices) error
 }
 
 func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, opts ...server.HandlerOption) error {
@@ -211,6 +235,8 @@ func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, 
 		SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error
 		AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error
 		SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error
+		AppendDevice(ctx context.Context, in *ReqClassDevice, out *ReplyClassDevices) error
+		SubtractDevice(ctx context.Context, in *ReqClassDevice, out *ReplyClassDevices) error
 	}
 	type ClassesService struct {
 		classesService
@@ -269,4 +295,12 @@ func (h *classesServiceHandler) AppendTeacher(ctx context.Context, in *ReqClassT
 
 func (h *classesServiceHandler) SubtractTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error {
 	return h.ClassesServiceHandler.SubtractTeacher(ctx, in, out)
+}
+
+func (h *classesServiceHandler) AppendDevice(ctx context.Context, in *ReqClassDevice, out *ReplyClassDevices) error {
+	return h.ClassesServiceHandler.AppendDevice(ctx, in, out)
+}
+
+func (h *classesServiceHandler) SubtractDevice(ctx context.Context, in *ReqClassDevice, out *ReplyClassDevices) error {
+	return h.ClassesServiceHandler.SubtractDevice(ctx, in, out)
 }

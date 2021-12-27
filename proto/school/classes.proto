@@ -17,6 +17,8 @@ service ClassesService {
   rpc SubtractStudent(ReqClassStudent) returns (ReplyClassStudents){}
   rpc AppendTeacher(ReqClassTeacher) returns (ReplyList){}
   rpc SubtractTeacher(ReqClassTeacher) returns (ReplyList){}
+  rpc AppendDevice(ReqClassDevice) returns (ReplyClassDevices){}
+  rpc SubtractDevice(ReqClassDevice) returns (ReplyClassDevices){}
 }
 
 message MemberInfo {
@@ -24,6 +26,12 @@ message MemberInfo {
   string student = 2;
   uint32 status = 3;
   string remark = 4;
+}
+
+message DeviceInfo {
+  uint32 type = 1;
+  string uid = 2;
+  string remark = 3;
 }
 
 message ClassInfo {
@@ -40,8 +48,10 @@ message ClassInfo {
   uint32 type = 11;
   uint32 no = 12;
   string master = 13;
-  repeated string teachers = 14;
-  repeated MemberInfo students = 15;
+  string assistant = 14;
+  repeated string teachers = 15;
+  repeated MemberInfo students = 16;
+  repeated DeviceInfo devices = 17;
 }
 
 message ReqClassAdd {
@@ -65,6 +75,7 @@ message ReqClassMaster {
   string uid = 2;
   string teacher = 3;
   string operator = 4;
+  string assistant = 5;
 }
 
 message ReqClassStudent {
@@ -81,6 +92,15 @@ message ReqClassTeacher{
   string uid = 2;
   string teacher = 3;
   string operator = 4;
+}
+
+message ReqClassDevice {
+  string school = 1;
+  string uid = 2;
+  string operator = 3;
+  uint32 type = 4;
+  string device = 5;
+  string remark = 6;
 }
 
 message ReplyClassInfo {
@@ -100,4 +120,10 @@ message ReplyClassList {
   uint32 number = 4; //每页的数量
   repeated ClassInfo list = 5; //实际数据
   ReplyStatus status = 6;
+}
+
+message ReplyClassDevices {
+  ReplyStatus status = 1;
+  repeated DeviceInfo list = 2; //实际数据
+
 }
