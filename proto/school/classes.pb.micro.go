@@ -42,6 +42,7 @@ type ClassesService interface {
 	UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	SetMaster(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
+	SetAssistant(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
 	AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error)
 	SubtractStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error)
 	AppendTeacher(ctx context.Context, in *ReqClassTeacher, opts ...client.CallOption) (*ReplyList, error)
@@ -142,6 +143,16 @@ func (c *classesService) SetMaster(ctx context.Context, in *ReqClassMaster, opts
 	return out, nil
 }
 
+func (c *classesService) SetAssistant(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.SetAssistant", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *classesService) AppendStudent(ctx context.Context, in *ReqClassStudent, opts ...client.CallOption) (*ReplyClassStudents, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.AppendStudent", in)
 	out := new(ReplyClassStudents)
@@ -213,6 +224,7 @@ type ClassesServiceHandler interface {
 	UpdateOne(context.Context, *ReqClassUpdate, *ReplyClassInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	SetMaster(context.Context, *ReqClassMaster, *ReplyInfo) error
+	SetAssistant(context.Context, *ReqClassMaster, *ReplyInfo) error
 	AppendStudent(context.Context, *ReqClassStudent, *ReplyClassStudents) error
 	SubtractStudent(context.Context, *ReqClassStudent, *ReplyClassStudents) error
 	AppendTeacher(context.Context, *ReqClassTeacher, *ReplyList) error
@@ -231,6 +243,7 @@ func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, 
 		UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
+		SetAssistant(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
 		AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error
 		SubtractStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error
 		AppendTeacher(ctx context.Context, in *ReqClassTeacher, out *ReplyList) error
@@ -279,6 +292,10 @@ func (h *classesServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, 
 
 func (h *classesServiceHandler) SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error {
 	return h.ClassesServiceHandler.SetMaster(ctx, in, out)
+}
+
+func (h *classesServiceHandler) SetAssistant(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error {
+	return h.ClassesServiceHandler.SetAssistant(ctx, in, out)
 }
 
 func (h *classesServiceHandler) AppendStudent(ctx context.Context, in *ReqClassStudent, out *ReplyClassStudents) error {
