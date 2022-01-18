@@ -39,6 +39,7 @@ type ClassesService interface {
 	GetList(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyClassList, error)
 	GetArray(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyClassList, error)
 	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error)
+	GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error)
 	UpdateOne(ctx context.Context, in *ReqClassUpdate, opts ...client.CallOption) (*ReplyClassInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	SetMaster(ctx context.Context, in *ReqClassMaster, opts ...client.CallOption) (*ReplyInfo, error)
@@ -106,6 +107,16 @@ func (c *classesService) GetArray(ctx context.Context, in *RequestList, opts ...
 func (c *classesService) GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyClassList, error) {
 	req := c.c.NewRequest(c.name, "ClassesService.GetByFilter", in)
 	out := new(ReplyClassList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *classesService) GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error) {
+	req := c.c.NewRequest(c.name, "ClassesService.GetStatistic", in)
+	out := new(ReplyStatistic)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -221,6 +232,7 @@ type ClassesServiceHandler interface {
 	GetList(context.Context, *RequestInfo, *ReplyClassList) error
 	GetArray(context.Context, *RequestList, *ReplyClassList) error
 	GetByFilter(context.Context, *RequestPage, *ReplyClassList) error
+	GetStatistic(context.Context, *RequestPage, *ReplyStatistic) error
 	UpdateOne(context.Context, *ReqClassUpdate, *ReplyClassInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	SetMaster(context.Context, *ReqClassMaster, *ReplyInfo) error
@@ -240,6 +252,7 @@ func RegisterClassesServiceHandler(s server.Server, hdlr ClassesServiceHandler, 
 		GetList(ctx context.Context, in *RequestInfo, out *ReplyClassList) error
 		GetArray(ctx context.Context, in *RequestList, out *ReplyClassList) error
 		GetByFilter(ctx context.Context, in *RequestPage, out *ReplyClassList) error
+		GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error
 		UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		SetMaster(ctx context.Context, in *ReqClassMaster, out *ReplyInfo) error
@@ -280,6 +293,10 @@ func (h *classesServiceHandler) GetArray(ctx context.Context, in *RequestList, o
 
 func (h *classesServiceHandler) GetByFilter(ctx context.Context, in *RequestPage, out *ReplyClassList) error {
 	return h.ClassesServiceHandler.GetByFilter(ctx, in, out)
+}
+
+func (h *classesServiceHandler) GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error {
+	return h.ClassesServiceHandler.GetStatistic(ctx, in, out)
 }
 
 func (h *classesServiceHandler) UpdateOne(ctx context.Context, in *ReqClassUpdate, out *ReplyClassInfo) error {

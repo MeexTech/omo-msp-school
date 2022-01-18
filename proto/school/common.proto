@@ -64,3 +64,10 @@ message ReplyList {
   string uid = 2;
   repeated string list = 3;
 }
+
+message ReplyStatistic {
+  ReplyStatus status = 1;
+  string key = 2;
+  string owner = 3;
+  uint32 count = 4;
+}

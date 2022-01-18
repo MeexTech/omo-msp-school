@@ -38,6 +38,7 @@ type SchoolService interface {
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplySchoolList, error)
 	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplySchoolList, error)
+	GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error)
 	GetArray(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplySchoolList, error)
 	UpdateOne(ctx context.Context, in *ReqSchoolUpdate, opts ...client.CallOption) (*ReplySchoolInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
@@ -91,6 +92,16 @@ func (c *schoolService) GetList(ctx context.Context, in *RequestPage, opts ...cl
 func (c *schoolService) GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplySchoolList, error) {
 	req := c.c.NewRequest(c.name, "SchoolService.GetByFilter", in)
 	out := new(ReplySchoolList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *schoolService) GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error) {
+	req := c.c.NewRequest(c.name, "SchoolService.GetStatistic", in)
+	out := new(ReplyStatistic)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -165,6 +176,7 @@ type SchoolServiceHandler interface {
 	GetOne(context.Context, *RequestInfo, *ReplySchoolInfo) error
 	GetList(context.Context, *RequestPage, *ReplySchoolList) error
 	GetByFilter(context.Context, *RequestPage, *ReplySchoolList) error
+	GetStatistic(context.Context, *RequestPage, *ReplyStatistic) error
 	GetArray(context.Context, *RequestList, *ReplySchoolList) error
 	UpdateOne(context.Context, *ReqSchoolUpdate, *ReplySchoolInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
@@ -179,6 +191,7 @@ func RegisterSchoolServiceHandler(s server.Server, hdlr SchoolServiceHandler, op
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplySchoolInfo) error
 		GetList(ctx context.Context, in *RequestPage, out *ReplySchoolList) error
 		GetByFilter(ctx context.Context, in *RequestPage, out *ReplySchoolList) error
+		GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error
 		GetArray(ctx context.Context, in *RequestList, out *ReplySchoolList) error
 		UpdateOne(ctx context.Context, in *ReqSchoolUpdate, out *ReplySchoolInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
@@ -211,6 +224,10 @@ func (h *schoolServiceHandler) GetList(ctx context.Context, in *RequestPage, out
 
 func (h *schoolServiceHandler) GetByFilter(ctx context.Context, in *RequestPage, out *ReplySchoolList) error {
 	return h.SchoolServiceHandler.GetByFilter(ctx, in, out)
+}
+
+func (h *schoolServiceHandler) GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error {
+	return h.SchoolServiceHandler.GetStatistic(ctx, in, out)
 }
 
 func (h *schoolServiceHandler) GetArray(ctx context.Context, in *RequestList, out *ReplySchoolList) error {
