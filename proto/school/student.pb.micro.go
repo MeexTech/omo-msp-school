@@ -46,6 +46,7 @@ type StudentService interface {
 	BindEntity(ctx context.Context, in *ReqStudentBind, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	UpdateTags(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyList, error)
+	UpdateStatus(ctx context.Context, in *RequestState, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type studentService struct {
@@ -180,6 +181,16 @@ func (c *studentService) UpdateTags(ctx context.Context, in *RequestList, opts .
 	return out, nil
 }
 
+func (c *studentService) UpdateStatus(ctx context.Context, in *RequestState, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "StudentService.UpdateStatus", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for StudentService service
 
 type StudentServiceHandler interface {
@@ -195,6 +206,7 @@ type StudentServiceHandler interface {
 	BindEntity(context.Context, *ReqStudentBind, *ReplyStudentInfo) error
 	UpdateCustodian(context.Context, *ReqStudentCustodian, *ReplyStudentInfo) error
 	UpdateTags(context.Context, *RequestList, *ReplyList) error
+	UpdateStatus(context.Context, *RequestState, *ReplyInfo) error
 }
 
 func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, opts ...server.HandlerOption) error {
@@ -211,6 +223,7 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 		BindEntity(ctx context.Context, in *ReqStudentBind, out *ReplyStudentInfo) error
 		UpdateCustodian(ctx context.Context, in *ReqStudentCustodian, out *ReplyStudentInfo) error
 		UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error
+		UpdateStatus(ctx context.Context, in *RequestState, out *ReplyInfo) error
 	}
 	type StudentService struct {
 		studentService
@@ -269,4 +282,8 @@ func (h *studentServiceHandler) UpdateCustodian(ctx context.Context, in *ReqStud
 
 func (h *studentServiceHandler) UpdateTags(ctx context.Context, in *RequestList, out *ReplyList) error {
 	return h.StudentServiceHandler.UpdateTags(ctx, in, out)
+}
+
+func (h *studentServiceHandler) UpdateStatus(ctx context.Context, in *RequestState, out *ReplyInfo) error {
+	return h.StudentServiceHandler.UpdateStatus(ctx, in, out)
 }

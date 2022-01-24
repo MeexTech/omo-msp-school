@@ -17,6 +17,7 @@ service StudentService {
   rpc BindEntity(ReqStudentBind) returns (ReplyStudentInfo){}
   rpc UpdateCustodian(ReqStudentCustodian) returns (ReplyStudentInfo){}
   rpc UpdateTags(RequestList) returns (ReplyList){}
+  rpc UpdateStatus(RequestState) returns (ReplyInfo){}
 }
 
 message CustodianInfo {
@@ -40,9 +41,10 @@ message StudentInfo {
   string entity = 12;
   string sid = 13;
   string class = 14;
-  string school = 15;
-  repeated string tags = 16;
-  repeated CustodianInfo custodians = 17;
+  uint32 status = 15;
+  string school = 16;
+  repeated string tags = 17;
+  repeated CustodianInfo custodians = 18;
 }
 
 message ReqStudentAdd {
@@ -56,7 +58,9 @@ message ReqStudentAdd {
   string class = 10;
   string sid = 11;
   string entity = 12;
-  repeated CustodianInfo custodians = 13;
+  uint32 status = 13;
+  repeated string tags = 14;
+  repeated CustodianInfo custodians = 15;
 }
 
 message ReqStudentUpdate {

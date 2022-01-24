@@ -42,6 +42,13 @@ message RequestPage{
   string params = 6;
 }
 
+message RequestState {
+  string parent = 1;
+  string flag = 2;
+  uint32 state = 3;
+  string operator = 4;
+}
+
 message RequestList{
   string parent = 1;
   string uid = 2;
