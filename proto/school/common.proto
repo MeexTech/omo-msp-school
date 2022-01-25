@@ -40,6 +40,7 @@ message RequestPage{
   string value = 4;
   string parent = 5;
   string params = 6;
+  repeated string list = 7;
 }
 
 message RequestState {
