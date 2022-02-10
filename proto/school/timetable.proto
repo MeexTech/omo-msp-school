@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service TimetableService {
+  rpc AddOne(ReqTimetableAdd) returns (ReplyTimetableInfo) {}
+  rpc AddBatch(ReqTimetableBatch) returns (ReplyTimetableList){}
+  rpc GetList(RequestPage) returns (ReplyTimetableList) {}
+  rpc GetByFilter(RequestPage) returns (ReplyTimetableList) {}
+  rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+}
+
+message TimetableInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string name = 3;
+  uint64 created = 4;
+  uint64 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string school = 8;
+  string class = 9;
+  uint32 year = 10;
+  repeated TimetableItem items = 11;
+}
+
+message TimetableItem{
+  uint32 weekday = 1;
+  uint32 number = 2;
+  string name = 3;
+  string class = 4;
+}
+
+message ReqTimetableAdd {
+  string school = 1;
+  string class = 2;
+  uint32 year = 3;
+  string operator = 4;
+  repeated TimetableItem items = 5;
+}
+
+message ReqTimetableBatch {
+  string school = 1;
+  string operator = 2;
+  uint32 year = 3;
+  repeated TimetableItem items = 4;
+}
+
+message ReplyTimetableInfo {
+  ReplyStatus status = 1;
+  TimetableInfo info = 2;
+}
+
+message ReplyTimetableList {
+  ReplyStatus status = 1;
+  repeated TimetableInfo list = 2;
+}
