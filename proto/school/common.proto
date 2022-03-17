@@ -41,7 +41,8 @@ message RequestPage{
   string parent = 5;
   string params = 6;
   string uid = 7;
-  repeated string list = 8;
+  string operator = 8;
+  repeated string list = 9;
 }
 
 message RequestState {

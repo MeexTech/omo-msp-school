@@ -51,10 +51,11 @@ message SchoolInfo {
   string name = 8;
   uint32 grade = 9;
   string entity = 10;
-  repeated HonorInfo honors = 11;
-  repeated HonorInfo respects = 12;
-  repeated SubjectInfo subjects = 13;
-  repeated string teachers = 14;
+  string support = 11;
+  repeated HonorInfo honors = 12;
+  repeated HonorInfo respects = 13;
+  repeated SubjectInfo subjects = 14;
+  repeated string teachers = 15;
 }
 
 message ReqSchoolAdd{
