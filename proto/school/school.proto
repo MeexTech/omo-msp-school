@@ -9,6 +9,7 @@ service SchoolService {
   rpc GetOne(RequestInfo) returns (ReplySchoolInfo) {}
   rpc GetList(RequestPage) returns (ReplySchoolList) {}
   rpc GetByFilter(RequestPage) returns (ReplySchoolList) {}
+  rpc SetByFilter(RequestPage) returns (ReplySchoolInfo) {}
   rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
   rpc GetArray(RequestList) returns (ReplySchoolList) {}
   rpc UpdateOne(ReqSchoolUpdate) returns (ReplySchoolInfo) {}

@@ -40,6 +40,7 @@ type StudentService interface {
 	GetList(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentList, error)
 	GetArray(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyStudentList, error)
 	GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error)
+	SetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	UpdateOne(ctx context.Context, in *ReqStudentUpdate, opts ...client.CallOption) (*ReplyStudentInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqStudentBatch, opts ...client.CallOption) (*ReplyStudentList, error)
@@ -114,6 +115,16 @@ func (c *studentService) GetArray(ctx context.Context, in *RequestList, opts ...
 func (c *studentService) GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error) {
 	req := c.c.NewRequest(c.name, "StudentService.GetStatistic", in)
 	out := new(ReplyStatistic)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *studentService) SetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStudentInfo, error) {
+	req := c.c.NewRequest(c.name, "StudentService.SetByFilter", in)
+	out := new(ReplyStudentInfo)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -200,6 +211,7 @@ type StudentServiceHandler interface {
 	GetList(context.Context, *RequestPage, *ReplyStudentList) error
 	GetArray(context.Context, *RequestList, *ReplyStudentList) error
 	GetStatistic(context.Context, *RequestPage, *ReplyStatistic) error
+	SetByFilter(context.Context, *RequestPage, *ReplyStudentInfo) error
 	UpdateOne(context.Context, *ReqStudentUpdate, *ReplyStudentInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqStudentBatch, *ReplyStudentList) error
@@ -217,6 +229,7 @@ func RegisterStudentServiceHandler(s server.Server, hdlr StudentServiceHandler, 
 		GetList(ctx context.Context, in *RequestPage, out *ReplyStudentList) error
 		GetArray(ctx context.Context, in *RequestList, out *ReplyStudentList) error
 		GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error
+		SetByFilter(ctx context.Context, in *RequestPage, out *ReplyStudentInfo) error
 		UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqStudentBatch, out *ReplyStudentList) error
@@ -258,6 +271,10 @@ func (h *studentServiceHandler) GetArray(ctx context.Context, in *RequestList, o
 
 func (h *studentServiceHandler) GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error {
 	return h.StudentServiceHandler.GetStatistic(ctx, in, out)
+}
+
+func (h *studentServiceHandler) SetByFilter(ctx context.Context, in *RequestPage, out *ReplyStudentInfo) error {
+	return h.StudentServiceHandler.SetByFilter(ctx, in, out)
 }
 
 func (h *studentServiceHandler) UpdateOne(ctx context.Context, in *ReqStudentUpdate, out *ReplyStudentInfo) error {

@@ -11,6 +11,7 @@ service StudentService {
   rpc GetList(RequestPage) returns (ReplyStudentList) {}
   rpc GetArray(RequestList) returns (ReplyStudentList) {}
   rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
+  rpc SetByFilter(RequestPage) returns (ReplyStudentInfo) {}
   rpc UpdateOne(ReqStudentUpdate) returns (ReplyStudentInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqStudentBatch) returns (ReplyStudentList){}

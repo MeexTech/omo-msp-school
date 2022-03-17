@@ -40,6 +40,7 @@ type TeacherService interface {
 	GetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherList, error)
 	GetArray(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyTeacherList, error)
 	GetStatistic(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyStatistic, error)
+	SetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	AddBatch(ctx context.Context, in *ReqTeacherBatch, opts ...client.CallOption) (*ReplyTeacherList, error)
@@ -118,6 +119,16 @@ func (c *teacherService) GetStatistic(ctx context.Context, in *RequestPage, opts
 	return out, nil
 }
 
+func (c *teacherService) SetByFilter(ctx context.Context, in *RequestPage, opts ...client.CallOption) (*ReplyTeacherInfo, error) {
+	req := c.c.NewRequest(c.name, "TeacherService.SetByFilter", in)
+	out := new(ReplyTeacherInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *teacherService) UpdateOne(ctx context.Context, in *ReqTeacherUpdate, opts ...client.CallOption) (*ReplyTeacherInfo, error) {
 	req := c.c.NewRequest(c.name, "TeacherService.UpdateOne", in)
 	out := new(ReplyTeacherInfo)
@@ -167,6 +178,7 @@ type TeacherServiceHandler interface {
 	GetByFilter(context.Context, *RequestPage, *ReplyTeacherList) error
 	GetArray(context.Context, *RequestList, *ReplyTeacherList) error
 	GetStatistic(context.Context, *RequestPage, *ReplyStatistic) error
+	SetByFilter(context.Context, *RequestPage, *ReplyTeacherInfo) error
 	UpdateOne(context.Context, *ReqTeacherUpdate, *ReplyTeacherInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	AddBatch(context.Context, *ReqTeacherBatch, *ReplyTeacherList) error
@@ -181,6 +193,7 @@ func RegisterTeacherServiceHandler(s server.Server, hdlr TeacherServiceHandler, 
 		GetByFilter(ctx context.Context, in *RequestPage, out *ReplyTeacherList) error
 		GetArray(ctx context.Context, in *RequestList, out *ReplyTeacherList) error
 		GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error
+		SetByFilter(ctx context.Context, in *RequestPage, out *ReplyTeacherInfo) error
 		UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		AddBatch(ctx context.Context, in *ReqTeacherBatch, out *ReplyTeacherList) error
@@ -219,6 +232,10 @@ func (h *teacherServiceHandler) GetArray(ctx context.Context, in *RequestList, o
 
 func (h *teacherServiceHandler) GetStatistic(ctx context.Context, in *RequestPage, out *ReplyStatistic) error {
 	return h.TeacherServiceHandler.GetStatistic(ctx, in, out)
+}
+
+func (h *teacherServiceHandler) SetByFilter(ctx context.Context, in *RequestPage, out *ReplyTeacherInfo) error {
+	return h.TeacherServiceHandler.SetByFilter(ctx, in, out)
 }
 
 func (h *teacherServiceHandler) UpdateOne(ctx context.Context, in *ReqTeacherUpdate, out *ReplyTeacherInfo) error {

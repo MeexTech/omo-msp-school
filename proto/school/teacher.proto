@@ -11,6 +11,7 @@ service TeacherService {
   rpc GetByFilter(RequestPage) returns (ReplyTeacherList) {}
   rpc GetArray(RequestList) returns (ReplyTeacherList) {}
   rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
+  rpc SetByFilter(RequestPage) returns (ReplyTeacherInfo) {}
   rpc UpdateOne(ReqTeacherUpdate) returns (ReplyTeacherInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc AddBatch(ReqTeacherBatch) returns (ReplyTeacherList){}
