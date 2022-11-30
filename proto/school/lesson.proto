@@ -23,10 +23,11 @@ message LessonInfo {
   string creator = 6;
   string operator = 7;
   string name = 8;
-  uint32 remark = 9;
+  string remark = 9;
   string cover = 10;
-  repeated string tags = 11;
-  repeated string assets = 12;
+  uint32 weight = 11;
+  repeated string tags = 12;
+  repeated string assets = 13;
 }
 
 message ReqLessonAdd{

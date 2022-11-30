@@ -25,10 +25,10 @@ message ScheduleInfo {
   string creator = 6;
   string operator = 7;
   string name = 8;
-  uint32 lesson = 9;
+  string lesson = 9;
   string place = 10;
   string date = 11;
-  string times = 12;
+  string during = 12;
   uint32 status = 13;
   uint32 max = 14;
   uint32 min = 15;
@@ -43,7 +43,7 @@ message ReqScheduleAdd{
   string operator = 3;
   string lesson = 4;
   string place = 5;
-  string times = 6;
+  string during = 6;
   uint32 max = 7;
   uint32 min = 8;
   repeated string tags = 9;
@@ -55,7 +55,7 @@ message ReqScheduleUpdate{
   string lesson = 2;
   string place = 3;
   string operator = 4;
-  string times = 5;
+  string during = 5;
   uint32 max = 6;
   uint32 min = 7;
   repeated string teachers = 8;
@@ -64,8 +64,8 @@ message ReqScheduleUpdate{
 message ReqScheduleUser {
   string parent = 1;
   string uid = 2;
-  string user = 3;
-  string operator = 4;
+  string operator = 3;
+  repeated string users = 4;
 }
 
 message ReplyScheduleInfo{
@@ -78,6 +78,7 @@ message ReplyScheduleUsers {
   string parent = 1;
   string uid = 2;
   repeated string users = 3;
+  ReplyStatus status = 4;
 }
 
 message ReplyScheduleList {
