@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service ScheduleService {
+  rpc AddOne(ReqScheduleAdd) returns (ReplyScheduleInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyScheduleInfo) {}
+  rpc GetByFilter(RequestPage) returns (ReplyScheduleList) {}
+  rpc SetByFilter(RequestPage) returns (ReplyScheduleInfo) {}
+  rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
+  rpc UpdateOne(ReqScheduleUpdate) returns (ReplyScheduleInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc AppendUser(ReqScheduleUser) returns (ReplyScheduleUsers){}
+  rpc SubtractUser(ReqScheduleUser) returns (ReplyScheduleUsers){}
+}
+
+message ScheduleInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string scene = 3;
+  uint64 created = 4;
+  uint64 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string name = 8;
+  uint32 lesson = 9;
+  string place = 10;
+  string date = 11;
+  string times = 12;
+  uint32 status = 13;
+  uint32 max = 14;
+  uint32 min = 15;
+  repeated string teachers = 16;
+  repeated string tags = 17;
+  repeated string users = 18;
+}
+
+message ReqScheduleAdd{
+  string scene = 1;
+  string date = 2;
+  string operator = 3;
+  string lesson = 4;
+  string place = 5;
+  string times = 6;
+  uint32 max = 7;
+  uint32 min = 8;
+  repeated string tags = 9;
+  repeated string teachers = 10;
+}
+
+message ReqScheduleUpdate{
+  string uid = 1;
+  string lesson = 2;
+  string place = 3;
+  string operator = 4;
+  string times = 5;
+  uint32 max = 6;
+  uint32 min = 7;
+  repeated string teachers = 8;
+}
+
+message ReqScheduleUser {
+  string parent = 1;
+  string uid = 2;
+  string user = 3;
+  string operator = 4;
+}
+
+message ReplyScheduleInfo{
+  ScheduleInfo info = 1;
+  uint32 role = 2;
+  ReplyStatus status = 3;
+}
+
+message ReplyScheduleUsers {
+  string parent = 1;
+  string uid = 2;
+  repeated string users = 3;
+}
+
+message ReplyScheduleList {
+  uint32 total = 1;
+  uint32 page = 2;
+  uint32 pages = 3;
+  uint32 number = 4;
+  repeated ScheduleInfo list = 5;
+  ReplyStatus status = 6;
+}

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package omo.msp.school;
+option go_package= "proto/school;omo_msp_school";
+import "proto/school/common.proto";
+
+service LessonService {
+  rpc AddOne(ReqLessonAdd) returns (ReplyLessonInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyLessonInfo) {}
+  rpc GetByFilter(RequestPage) returns (ReplyLessonList) {}
+  rpc SetByFilter(RequestPage) returns (ReplyLessonInfo) {}
+  rpc GetStatistic(RequestPage) returns (ReplyStatistic) {}
+  rpc UpdateOne(ReqLessonUpdate) returns (ReplyLessonInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+}
+
+message LessonInfo {
+  uint64 id = 1;
+  string uid = 2;
+  string scene = 3;
+  uint64 created = 4;
+  uint64 updated = 5;
+  string creator = 6;
+  string operator = 7;
+  string name = 8;
+  uint32 remark = 9;
+  string cover = 10;
+  repeated string tags = 11;
+  repeated string assets = 12;
+}
+
+message ReqLessonAdd{
+  string scene = 1;
+  string name = 3;
+  string cover = 4;
+  string remark = 5;
+  string operator = 6;
+  repeated string tags = 7;
+  repeated string assets = 8;
+}
+
+message ReqLessonUpdate{
+  string uid = 1;
+  string name = 2;
+  string remark = 3;
+  string operator = 4;
+  repeated string tags = 5;
+}
+
+message ReplyLessonInfo{
+  LessonInfo info = 1;
+  uint32 role = 2;
+  ReplyStatus status = 3;
+}
+
+message ReplyLessonList {
+  uint32 total = 1;
+  uint32 page = 2;
+  uint32 pages = 3;
+  uint32 number = 4;
+  repeated LessonInfo list = 5;
+  ReplyStatus status = 6;
+}
