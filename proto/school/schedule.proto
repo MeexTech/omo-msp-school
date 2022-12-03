@@ -32,9 +32,11 @@ message ScheduleInfo {
   uint32 status = 13;
   uint32 max = 14;
   uint32 min = 15;
-  repeated string teachers = 16;
-  repeated string tags = 17;
-  repeated string users = 18;
+  uint64 start = 16;
+  uint64 end = 17;
+  repeated string teachers = 18;
+  repeated string tags = 19;
+  repeated string users = 20;
 }
 
 message ReqScheduleAdd{
