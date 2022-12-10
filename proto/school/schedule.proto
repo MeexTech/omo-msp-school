@@ -49,8 +49,9 @@ message ReqScheduleAdd{
   string during = 6;
   uint32 max = 7;
   uint32 min = 8;
-  repeated string tags = 9;
-  repeated string teachers = 10;
+  string remark = 9;
+  repeated string tags = 10;
+  repeated string teachers = 11;
 }
 
 message ReqScheduleUpdate{
@@ -61,7 +62,8 @@ message ReqScheduleUpdate{
   string during = 5;
   uint32 max = 6;
   uint32 min = 7;
-  repeated string teachers = 8;
+  string remark = 8;
+  repeated string teachers = 9;
 }
 
 message ReqScheduleUser {
