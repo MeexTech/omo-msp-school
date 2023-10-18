@@ -46,6 +46,7 @@ message StudentInfo {
   string school = 16;
   repeated string tags = 17;
   repeated CustodianInfo custodians = 18;
+  repeated PairInfo kvs = 41;
 }
 
 message ReqStudentAdd {
