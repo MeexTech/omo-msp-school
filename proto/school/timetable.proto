@@ -24,7 +24,7 @@ message TimetableInfo {
   string school = 8;
   string class = 9;
   uint32 year = 10;
-  repeated TimetableItem items = 11;
+  repeated TimetableItem items = 21;
 }
 
 message TimetableItem{
@@ -39,14 +39,14 @@ message ReqTimetableAdd {
   string class = 2;
   uint32 year = 3;
   string operator = 4;
-  repeated TimetableItem items = 5;
+  repeated TimetableItem items = 11;
 }
 
 message ReqTimetableBatch {
   string school = 1;
   string operator = 2;
   uint32 year = 3;
-  repeated TimetableItem items = 4;
+  repeated TimetableItem items = 11;
 }
 
 message ReplyTimetableInfo {
@@ -56,5 +56,5 @@ message ReplyTimetableInfo {
 
 message ReplyTimetableList {
   ReplyStatus status = 1;
-  repeated TimetableInfo list = 2;
+  repeated TimetableInfo list = 11;
 }

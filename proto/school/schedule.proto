@@ -35,9 +35,9 @@ message ScheduleInfo {
   uint64 start = 16;
   uint64 end = 17;
   string remark = 18;
-  repeated string teachers = 19;
-  repeated string tags = 20;
-  repeated string users = 21;
+  repeated string teachers = 31;
+  repeated string tags = 32;
+  repeated string users = 33;
 }
 
 message ReqScheduleAdd{
@@ -50,8 +50,8 @@ message ReqScheduleAdd{
   uint32 max = 7;
   uint32 min = 8;
   string remark = 9;
-  repeated string tags = 10;
-  repeated string teachers = 11;
+  repeated string tags = 21;
+  repeated string teachers = 22;
 }
 
 message ReqScheduleUpdate{
@@ -63,14 +63,14 @@ message ReqScheduleUpdate{
   uint32 max = 6;
   uint32 min = 7;
   string remark = 8;
-  repeated string teachers = 9;
+  repeated string teachers = 21;
 }
 
 message ReqScheduleUser {
   string parent = 1;
   string uid = 2;
   string operator = 3;
-  repeated string users = 4;
+  repeated string users = 11;
 }
 
 message ReplyScheduleInfo{
@@ -82,8 +82,8 @@ message ReplyScheduleInfo{
 message ReplyScheduleUsers {
   string parent = 1;
   string uid = 2;
-  repeated string users = 3;
-  ReplyStatus status = 4;
+  ReplyStatus status = 3;
+  repeated string users = 11;
 }
 
 message ReplyScheduleList {
@@ -91,6 +91,6 @@ message ReplyScheduleList {
   uint32 page = 2;
   uint32 pages = 3;
   uint32 number = 4;
-  repeated ScheduleInfo list = 5;
-  ReplyStatus status = 6;
+  ReplyStatus status = 5;
+  repeated ScheduleInfo list = 11;
 }

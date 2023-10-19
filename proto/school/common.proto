@@ -42,7 +42,7 @@ message RequestPage{
   string params = 6;
   string uid = 7;
   string operator = 8;
-  repeated string list = 9;
+  repeated string list = 21;
 }
 
 message RequestState {
@@ -56,7 +56,7 @@ message RequestList{
   string parent = 1;
   string uid = 2;
   string operator = 3;
-  repeated string list = 4;
+  repeated string list = 11;
 }
 
 message ReplyStatus {
@@ -72,7 +72,7 @@ message ReplyInfo {
 message ReplyList {
   ReplyStatus status = 1;
   string uid = 2;
-  repeated string list = 3;
+  repeated string list = 11;
 }
 
 message ReplyStatistic {

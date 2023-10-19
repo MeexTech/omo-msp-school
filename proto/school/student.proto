@@ -44,8 +44,9 @@ message StudentInfo {
   string class = 14;
   uint32 status = 15;
   string school = 16;
-  repeated string tags = 17;
-  repeated CustodianInfo custodians = 18;
+  uint32 number = 17;
+  repeated string tags = 31;
+  repeated CustodianInfo custodians = 40;
   repeated PairInfo kvs = 41;
 }
 
@@ -61,8 +62,9 @@ message ReqStudentAdd {
   string sid = 11;
   string entity = 12;
   uint32 status = 13;
-  repeated string tags = 14;
-  repeated CustodianInfo custodians = 15;
+  uint32 number = 14;
+  repeated string tags = 21;
+  repeated CustodianInfo custodians = 31;
 }
 
 message ReqStudentUpdate {
@@ -74,7 +76,7 @@ message ReqStudentUpdate {
   string sn = 6;
   string operator = 7;
   string enrol = 9;
-  repeated CustodianInfo custodians = 10;
+  repeated CustodianInfo custodians = 21;
 }
 
 message ReqStudentCustodian {
@@ -96,7 +98,7 @@ message ReqStudentBind {
 message ReqStudentBatch {
   string owner = 1;
   string operator = 2;
-  repeated ReqStudentAdd list = 3;
+  repeated ReqStudentAdd list = 11;
 }
 
 message ReplyStudentInfo {
@@ -109,6 +111,6 @@ message ReplyStudentList {
   uint32 page = 2;
   uint32 pages = 3;
   uint32 number = 4;
-  repeated StudentInfo list = 5;
-  ReplyStatus status = 6;
+  ReplyStatus status = 5;
+  repeated StudentInfo list = 11;
 }

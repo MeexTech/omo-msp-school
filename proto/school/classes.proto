@@ -44,8 +44,8 @@ message ClassInfo {
   uint32 no = 12;
   string master = 13;
   string assistant = 14;
-  repeated string teachers = 15;
-  repeated MemberInfo students = 16;
+  repeated string teachers = 21;
+  repeated MemberInfo students = 31;
 }
 
 message ReqClassAdd {
@@ -94,7 +94,7 @@ message ReplyClassInfo {
 
 message ReplyClassStudents {
   ReplyStatus status = 1;
-  repeated MemberInfo students = 2;
+  repeated MemberInfo students = 11;
 }
 
 message ReplyClassList {
@@ -102,6 +102,6 @@ message ReplyClassList {
   uint32 page = 2; //当前页
   uint32 pages = 3; //当前页
   uint32 number = 4; //每页的数量
-  repeated ClassInfo list = 5; //实际数据
-  ReplyStatus status = 6;
+  ReplyStatus status = 5;
+  repeated ClassInfo list = 11; //实际数据
 }
